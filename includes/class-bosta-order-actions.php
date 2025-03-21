@@ -9,10 +9,21 @@ class Bosta_Order_Actions {
     public function __construct() {
         $this->api = new Bosta_API();
         add_filter('woocommerce_admin_order_actions', array($this, 'add_send_to_bosta_button'), 10, 2);
+        add_filter('woocommerce_admin_order_actions', array($this, 'add_print_AWB_button'), 10, 2);
         add_action('admin_post_bosta_send_order', array($this, 'handle_send_order'));
     }
 
     public function add_send_to_bosta_button($actions, $order) {
+        if ($order->get_status() !== 'completed') {
+            $actions['send_to_bosta'] = array(
+                'url'  => wp_nonce_url(admin_url('admin-post.php?action=bosta_send_order&order_id=' . $order->get_id()), 'bosta_send_order_nonce'),
+                'name' => __('Send to Bosta', 'bosta-wc'),
+                'action' => 'send_to_bosta',
+            );
+        }
+        return $actions;
+    }
+    public function add_print_AWB_button($actions, $order) {
         if ($order->get_status() !== 'completed') {
             $actions['send_to_bosta'] = array(
                 'url'  => wp_nonce_url(admin_url('admin-post.php?action=bosta_send_order&order_id=' . $order->get_id()), 'bosta_send_order_nonce'),
