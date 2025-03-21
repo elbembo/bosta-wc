@@ -147,18 +147,21 @@ class Bosta_Orders {
         $order_total = $columns['order_total'];
         $order_date = $columns['order_date'];
         $order_status = $columns['order_status'];
+        $order_actions = $columns['order_actions'];
 
         unset($columns['order_date']);
         unset($columns['order_status']);
         unset($columns['order_total']);
+        unset($columns['order_actions']);
 
-        $columns["bosta_tracking_number"] = __("Bosta Tracking Number", "themeprefix");
+        $columns["bosta_tracking_number"] = __("Bosta Tracking Number", "bosta-wc");
         $columns['order_date'] = $order_date;
         $columns['order_status'] = $order_status;
-        $columns["bosta_status"] = __("Bosta Status", "themeprefix");
-        $columns["bosta_delivery_date"] = __("Delivered at", "themeprefix");
-        $columns["bosta_customer_phone"] = __("Customer phone", "themeprefix");
+        $columns["bosta_status"] = __("Bosta Status", "bosta-wc");
+        $columns["bosta_delivery_date"] = __("Delivered at", "bosta-wc");
+        $columns["bosta_customer_phone"] = __("Customer phone", "bosta-wc");
         $columns['order_total'] = $order_total;
+        $columns['order_actions'] = $order_actions ;
 
         return $columns;
     }

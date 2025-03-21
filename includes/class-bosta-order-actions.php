@@ -29,7 +29,7 @@ class Bosta_Order_Actions {
         if ($order->get_status() !== 'completed') {
             $actions['print_awb'] = array(
                 'url'  => wp_nonce_url(admin_url('admin-post.php?action=print_awb&order_id=' . $order->get_id()), 'print_awb_nonce'),
-                'name' => __('Send to Bosta', 'bosta-wc'),
+                'name' => __('Print AWB', 'bosta-wc'),
                 'action' => 'print_awb',
             );
         }
