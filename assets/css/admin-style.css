@@ -1,3 +1,6 @@
 .widefat .column-wc_actions a.send_to_bosta::after {
     content: "\f342";
 }
+.widefat .column-wc_actions a.print_awb::after {
+    content: "\f193";
+}
