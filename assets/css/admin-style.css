@@ -1,0 +1,3 @@
+.widefat .column-wc_actions a.send_to_bosta::after {
+    content: "\f342";
+}
