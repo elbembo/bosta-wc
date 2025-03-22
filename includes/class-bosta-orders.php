@@ -14,8 +14,8 @@ class Bosta_Orders
         // add_filter('handle_bulk_actions-edit-shop_order', array($this, 'handle_bulk_action'), 10, 3);
         // add_filter('woocommerce_admin_order_actions', array($this, 'add_send_order_button'), 10, 2);
 
-        add_filter('woocommerce_admin_order_preview_get_order_details', array($this, 'admin_order_preview_add_custom_meta_data'), 10, 2);
-        add_filter('woocommerce_states', array($this, 'custom_woocommerce_states'));
+        // add_filter('woocommerce_admin_order_preview_get_order_details', array($this, 'admin_order_preview_add_custom_meta_data'), 10, 2);
+        // add_filter('woocommerce_states', array($this, 'custom_woocommerce_states'));
 
         add_filter('manage_edit-shop_order_columns', array($this, 'wco_add_columns'));
         add_filter('manage_woocommerce_page_wc-orders_columns', array($this, 'wco_add_columns'));
@@ -90,7 +90,6 @@ class Bosta_Orders
 
     private function preview_extract_order_details($orderDetails)
     {
-        return $orderDetails;
         return [
             'trackingNumber' => $orderDetails['trackingNumber'] ?? 'N/A',
             'status' => $orderDetails['state']['value'] ?? 'N/A',
