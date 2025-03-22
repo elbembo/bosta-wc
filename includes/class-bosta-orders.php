@@ -40,7 +40,7 @@ class Bosta_Orders
             $message = 'API Key is required to be able to sync with Bosta';
             Bosta_Helper::bosta_set_transient('bosta_errors', "<p>{$message}</p>");
             // bosta_redirect_to_settings_page();
-            wc_get_logger()->error( $message, "Bosta WooCommerce" );
+            wc_get_logger()->error( $message, array('source' => 'Bosta WooCommerce'));
             return;
         }
 
@@ -48,7 +48,7 @@ class Bosta_Orders
         if (empty($trackingNumber)) {
             $message = 'Order is not synced at Bosta';
             Bosta_Helper::bosta_set_transient('bosta_errors', "<p>{$message}</p>");
-            wc_get_logger()->error( $message, "Bosta WooCommerce" );
+            wc_get_logger()->error( $message, array('source' => 'Bosta WooCommerce'));
             return;
         }
 
@@ -56,7 +56,7 @@ class Bosta_Orders
         $response = $this->api->send_api_request('GET', $url, $APIKey);
         if (!$response['success']) {
             Bosta_Helper::format_failed_order_message($response['error']);
-            wc_get_logger()->error( $response['error'], "Bosta WooCommerce" );
+            wc_get_logger()->error( "send_api_request", array('source' => 'Bosta WooCommerce','api_response' =>$response['error'] ) );
             return;
         }
         $orderDetails = $response['body']['data'];
