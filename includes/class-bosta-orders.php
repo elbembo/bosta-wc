@@ -216,7 +216,7 @@ class Bosta_Orders
 
         $action_handlers = [
             'create_pickup' => function () {
-                $redirect_url = add_query_arg('page', 'bosta-woocommerce-create-edit-pickup', admin_url('admin.php'));
+                $redirect_url = add_query_arg('page', 'bosta-pickup-requests', admin_url('admin.php'));
                 wp_safe_redirect($redirect_url);
                 exit;
             },
