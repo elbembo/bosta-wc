@@ -14,7 +14,7 @@ class Bosta_Bulk_Actions {
         add_filter('bulk_actions-edit-shop_order', array($this,'bosta_sync'), 20);
         add_filter('bulk_actions-woocommerce_page_wc-orders', array($this, 'bosta_sync'), 20);
 
-        add_filter('bulk_actions-edit-shop_order', array($this,'bosta_print_awb', 20));
+        add_filter('bulk_actions-edit-shop_order', array($this,'bosta_print_awb'), 20);
         add_filter('bulk_actions-woocommerce_page_wc-orders', array($this,'bosta_print_awb'), 20);
 
         add_filter('handle_bulk_actions-edit-shop_order', array($this,'bosta_handle_bulk_action'), 10, 3);
