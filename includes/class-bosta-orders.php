@@ -421,4 +421,4 @@ class Bosta_Orders {
         }
     }
 }
-new Bosta_Orders();
+// new Bosta_Orders();
