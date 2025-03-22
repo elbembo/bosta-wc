@@ -1,6 +1,24 @@
 .widefat .column-wc_actions a.send_to_bosta::after {
-    content: "\f342";
+  content: '\f342';
 }
 .widefat .column-wc_actions a.print_awb::after {
-    content: "\f193";
+  content: '\f193';
+}
+.bosta_custom_button_warp {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+button.button.bosta_custom_button {
+    padding: 4px 11px;
+    background: #0098a5;
+    color: white;
+    border-color: #07bac9;
+}
+button.button.bosta_custom_button.bosta_sync {
+    background: #e30613;
+    color: white;
+    border-color: #ed1a26;
 }
