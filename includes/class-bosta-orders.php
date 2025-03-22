@@ -3,34 +3,35 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Bosta_Orders {
+class Bosta_Orders
+{
     private $api;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->api = new Bosta_API();
         // add_filter('bulk_actions-edit-shop_order', array($this, 'register_bulk_action'));
         // add_filter('handle_bulk_actions-edit-shop_order', array($this, 'handle_bulk_action'), 10, 3);
         // add_filter('woocommerce_admin_order_actions', array($this, 'add_send_order_button'), 10, 2);
 
-        add_filter('woocommerce_admin_order_preview_get_order_details', array($this,'admin_order_preview_add_custom_meta_data'), 10, 2);
-        add_filter('woocommerce_states', array($this,'custom_woocommerce_states'));
+        add_filter('woocommerce_admin_order_preview_get_order_details', array($this, 'admin_order_preview_add_custom_meta_data'), 10, 2);
+        add_filter('woocommerce_states', array($this, 'custom_woocommerce_states'));
 
-        add_filter('manage_edit-shop_order_columns', array($this,'wco_add_columns'));
-        add_filter('manage_woocommerce_page_wc-orders_columns', array($this,'wco_add_columns'));
+        add_filter('manage_edit-shop_order_columns', array($this, 'wco_add_columns'));
+        add_filter('manage_woocommerce_page_wc-orders_columns', array($this, 'wco_add_columns'));
 
-        add_action('manage_shop_order_posts_custom_column', array($this,'wco_column_cb_data'), 10, 2);
-        add_action('manage_woocommerce_page_wc-orders_custom_column', array($this,'wco_column_cb_data'), 10, 2);
+        add_action('manage_shop_order_posts_custom_column', array($this, 'wco_column_cb_data'), 10, 2);
+        add_action('manage_woocommerce_page_wc-orders_custom_column', array($this, 'wco_column_cb_data'), 10, 2);
 
         add_action('woocommerce_order_list_table_extra_tablenav', array($this, 'add_extra_tablenav_components_hpos'), 20, 2);
 
-        add_action('manage_posts_extra_tablenav', array($this,'add_extra_tablenav_components'), 20);
+        add_action('manage_posts_extra_tablenav', array($this, 'add_extra_tablenav_components'), 20);
 
-        add_filter('woocommerce_order_table_search_query_meta_keys', array($this,'woocommerce_shop_order_search_order_total'));
-        add_filter('woocommerce_shop_order_search_fields', array($this,'woocommerce_shop_order_search_order_total'));
+        add_filter('woocommerce_order_table_search_query_meta_keys', array($this, 'woocommerce_shop_order_search_order_total'));
+        add_filter('woocommerce_shop_order_search_fields', array($this, 'woocommerce_shop_order_search_order_total'));
 
-        add_action('woocommerce_order_list_table_restrict_manage_orders', array($this,'add_custom_bosta_statues_filter_for_hpos'));
-        add_filter('woocommerce_order_list_table_prepare_items_query_args', array($this,'apply_custom_bosta_statues_filter_for_hpos'));
-
+        add_action('woocommerce_order_list_table_restrict_manage_orders', array($this, 'add_custom_bosta_statues_filter_for_hpos'));
+        add_filter('woocommerce_order_list_table_prepare_items_query_args', array($this, 'apply_custom_bosta_statues_filter_for_hpos'));
     }
     public function admin_order_preview_add_custom_meta_data($data, $order)
     {
@@ -68,7 +69,7 @@ class Bosta_Orders {
     private function preview_extract_order_timeline_details($orderDetails)
     {
         $timelineData = [];
-    
+
         if (!empty($orderDetails['timeline'])) {
             foreach ($orderDetails['timeline'] as $x => $timeline) {
                 $timelineData["timeline_value_$x"] = $timeline['value'] ?? 'N/A';
@@ -83,10 +84,10 @@ class Bosta_Orders {
             $timelineLength = count($orderDetails['timeline']);
             set_transient('bosta_timelineLength', $timelineLength, HOUR_IN_SECONDS);
         }
-    
+
         return $timelineData;
     }
-    
+
     private function preview_extract_order_details($orderDetails)
     {
         return [
@@ -100,7 +101,7 @@ class Bosta_Orders {
             'notes' => $orderDetails['notes'] ?? 'N/A'
         ];
     }
-    
+
     private function preview_extract_customer_info($orderDetails)
     {
         return [
@@ -115,7 +116,7 @@ class Bosta_Orders {
             'dropOffAddressApartment' => $orderDetails['dropOffAddress']['apartment'] ?? 'N/A'
         ];
     }
-    
+
     private function preview_extract_pickup_info($orderDetails)
     {
         return [
@@ -129,7 +130,7 @@ class Bosta_Orders {
             'pickupRequestId' => $orderDetails['pickupRequestId'] ?? 'N/A'
         ];
     }
-    
+
     private function preview_extract_bosta_performance_info($orderDetails)
     {
         $promise = 'Not started yet';
@@ -137,7 +138,7 @@ class Bosta_Orders {
             $isExceeded = $orderDetails['sla']['e2eSla']['isExceededE2ESla'] ?? false;
             $data['promise'] = $isExceeded ? 'Not met' : 'Met';
         }
-    
+
         return [
             'outboundActionsCount' => $orderDetails['outboundActionsCount'] ?? '0',
             'deliveryAttemptsLength' => $orderDetails['deliveryAttemptsLength'] ?? '0',
@@ -171,7 +172,7 @@ class Bosta_Orders {
         $columns["bosta_delivery_date"] = __("Delivered at", "bosta-wc");
         $columns["bosta_customer_phone"] = __("Customer phone", "bosta-wc");
         $columns['order_total'] = $order_total;
-        $columns['wc_actions'] = $wc_actions ;
+        $columns['wc_actions'] = $wc_actions;
 
         return $columns;
     }
@@ -179,24 +180,24 @@ class Bosta_Orders {
     public function wco_column_cb_data($colName, $orderId)
     {
         $order = wc_get_order($orderId);
-    
+
         $status = $order->get_meta('bosta_status', true);
         $trackingNumber = $order->get_meta('bosta_tracking_number', true);
         $deliveryDate = $order->get_meta('bosta_delivery_date', true);
         $customerPhone = $order->get_meta('bosta_customer_phone', true);
-    
+
         if ($colName == 'bosta_status') {
             echo !empty($status) ? esc_html($status) : "---";
         }
-    
+
         if ($colName == 'bosta_tracking_number') {
             echo !empty($trackingNumber) ? esc_html($trackingNumber) : "---";
         }
-    
+
         if ($colName == 'bosta_delivery_date') {
             echo !empty($deliveryDate) ? $deliveryDate : "---";
         }
-    
+
         if ($colName == 'bosta_customer_phone') {
             echo !empty($customerPhone) ? esc_html($customerPhone) : "---";
         }
@@ -207,12 +208,12 @@ class Bosta_Orders {
         if ('shop_order' !== $post_type || 'top' !== $which) {
             return;
         }
-    
+
         $nonces = [
             'send_all' => wp_create_nonce('bosta_send_all_nonce'),
             'fetch_status' => wp_create_nonce('bosta_fetch_status_nonce'),
         ];
-    
+
         $action_handlers = [
             'create_pickup' => function () {
                 $redirect_url = add_query_arg('page', 'bosta-woocommerce-create-edit-pickup', admin_url('admin.php'));
@@ -234,7 +235,7 @@ class Bosta_Orders {
                 );
             },
         ];
-    
+
         foreach ($action_handlers as $action => $handler) {
             $value = isset($_GET[$action]) ? sanitize_text_field($_GET[$action]) : null;
             if ($value === 'yes') {
@@ -242,7 +243,7 @@ class Bosta_Orders {
                 break;
             }
         }
-    
+
         $this->render_custom_buttons($nonces['send_all'], $nonces['fetch_status']);
     }
 
@@ -259,13 +260,13 @@ class Bosta_Orders {
             $current_user_id = get_current_user_id();
             $current_page = isset($_GET['page_num']) ? $_GET['page_num'] : 1;
             $orders_per_page = get_user_option('edit_shop_order_per_page', $current_user_id);
-    
+
             $orderIds = wc_get_orders([
                 'limit' => $orders_per_page,
                 'paged' => $current_page,
                 'return' => 'ids',
             ]);
-    
+
             $redirect_url = add_query_arg('paged', $current_page, admin_url('edit.php?post_type=shop_order'));
             bosta_handle_bulk_action($redirect_url, $action_type, $orderIds);
         } else {
@@ -276,33 +277,29 @@ class Bosta_Orders {
     private function render_custom_buttons($send_all_nonce, $fetch_status)
     {
         ?>
-            <div class="alignleft bosta_custom_buttons_div">
-                <div class="rightDiv">
-                    <button type="submit" name="create_pickup" class="button bosta_custom_button" value="yes">Create Pickup</button>
-                    <button type="submit" name="send_all_orders" class="button bosta_custom_button" value="yes">Send all Orders to Bosta</button>
-                    <input type="hidden" name="bosta_send_all_nonce_field" value="<?php echo esc_attr($send_all_nonce); ?>">
-                </div>
-                <div class="leftDiv">
-                    <button type="submit" name="fetch_status" class="button bosta_custom_button bosta_sync" value="yes">
-                        <img class="refreshIcon" width="14" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_BASE_FILE)); ?>" alt="Bosta"> Refresh Bosta Status
-                    </button>
-                    <input type="hidden" name="bosta_fetch_status_nonce_field" value="<?php echo esc_attr($fetch_status); ?>">
-                </div>
-                <input type="hidden" name="page_num" value="<?php echo esc_attr($_GET['paged'] ?? '1'); ?>">
-            </div>
+        <button type="submit" name="create_pickup" class="button bosta_custom_button" value="yes">Create Pickup</button>
+        <button type="submit" name="send_all_orders" class="button bosta_custom_button" value="yes">Send all Orders to Bosta</button>
+        <input type="hidden" name="bosta_send_all_nonce_field" value="<?php echo esc_attr($send_all_nonce); ?>">
+
+        <button type="submit" name="fetch_status" class="button bosta_custom_button bosta_sync" value="yes">
+            <img class="refreshIcon" width="14" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_BASE_FILE)); ?>" alt="Bosta"> Refresh Bosta Status
+        </button>
+        <input type="hidden" name="bosta_fetch_status_nonce_field" value="<?php echo esc_attr($fetch_status); ?>">
+        <input type="hidden" name="page_num" value="<?php echo esc_attr($_GET['paged'] ?? '1'); ?>">
         <?php
     }
-    
+
     public function woocommerce_shop_order_search_order_total($search_fields)
     {
         $search_fields[] = 'bosta_tracking_number';
         $search_fields[] = 'bosta_customer_phone';
         $search_fields[] = 'bosta_status';
-    
+
         return $search_fields;
     }
 
-    public function add_custom_bosta_statues_filter_for_hpos() {
+    public function add_custom_bosta_statues_filter_for_hpos()
+    {
         $current_status = isset($_GET['bosta_status']) ? sanitize_text_field($_GET['bosta_status']) : '';
 
         $options = array(
@@ -320,31 +317,32 @@ class Bosta_Orders {
         echo '</select>';
     }
 
-    public function apply_custom_bosta_statues_filter_for_hpos($query_args) {
+    public function apply_custom_bosta_statues_filter_for_hpos($query_args)
+    {
         if (!empty($_GET['bosta_status'])) {
             $bosta_status = sanitize_text_field($_GET['bosta_status']);
-            
+
             $query_args['meta_query'][] = array(
                 'key'     => 'bosta_status',
                 'value'   => $bosta_status,
                 'compare' => '=',
             );
         }
-    
+
         return $query_args;
     }
 
-    
 
 
 
-    public function get_order_by_metadata($meta_key, $meta_value) 
-    {	
+
+    public function get_order_by_metadata($meta_key, $meta_value)
+    {
         $page_num = isset($_GET['page_num']) ? $_GET['page_num'] : 1;
         $query = new \WC_Order_Query([
-            'limit' => 1, 
-            'meta_key' => $meta_key, 
-            'meta_value' => $meta_value, 
+            'limit' => 1,
+            'meta_key' => $meta_key,
+            'meta_value' => $meta_value,
             'paged' => $page_num
         ]);
         $orders = $query->get_orders();
@@ -387,15 +385,17 @@ class Bosta_Orders {
         $order->save();
     }
 
-    
+
 
     // AI
-    public function register_bulk_action($bulk_actions) {
+    public function register_bulk_action($bulk_actions)
+    {
         $bulk_actions['send_to_bosta'] = __('Send to Bosta', 'bosta-wc');
         return $bulk_actions;
     }
 
-    public function handle_bulk_action($redirect_to, $action, $order_ids) {
+    public function handle_bulk_action($redirect_to, $action, $order_ids)
+    {
         if ($action !== 'send_to_bosta') {
             return $redirect_to;
         }
@@ -408,7 +408,8 @@ class Bosta_Orders {
         return $redirect_to;
     }
 
-    public function add_send_order_button($actions, $order) {
+    public function add_send_order_button($actions, $order)
+    {
         $actions['send_to_bosta'] = [
             'url' => wp_nonce_url(admin_url('admin-post.php?action=send_to_bosta&order_id=' . $order->get_id()), 'send_to_bosta'),
             'name' => __('Send to Bosta', 'bosta-wc'),
@@ -416,9 +417,10 @@ class Bosta_Orders {
         ];
         return $actions;
     }
-    
 
-    public function send_order_to_bosta($order_id) {
+
+    public function send_order_to_bosta($order_id)
+    {
         $order = wc_get_order($order_id);
         if (!$order) return;
 
