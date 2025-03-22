@@ -49,7 +49,7 @@ class Bosta_Orders
             $message = 'Order is not synced at Bosta';
             Bosta_Helper::bosta_set_transient('bosta_errors', "<p>{$message}</p>");
             wc_get_logger()->error( $message, array('source' => 'Bosta WooCommerce'));
-            return;
+            return $data;
         }
 
         $url = BOSTA_ENV_URL_V2 . '/deliveries/business/' . $trackingNumber;
