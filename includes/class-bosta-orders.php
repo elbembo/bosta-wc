@@ -14,7 +14,7 @@ class Bosta_Orders
         // add_filter('handle_bulk_actions-edit-shop_order', array($this, 'handle_bulk_action'), 10, 3);
         // add_filter('woocommerce_admin_order_actions', array($this, 'add_send_order_button'), 10, 2);
 
-        // add_filter('woocommerce_admin_order_preview_get_order_details', array($this, 'admin_order_preview_add_custom_meta_data'), 10, 2);
+        add_filter('woocommerce_admin_order_preview_get_order_details', array($this, 'admin_order_preview_add_custom_meta_data'), 10, 2);
         add_filter('woocommerce_states', array($this, 'custom_woocommerce_states'));
 
         add_filter('manage_edit-shop_order_columns', array($this, 'wco_add_columns'));
@@ -40,6 +40,7 @@ class Bosta_Orders
             $message = 'API Key is required to be able to sync with Bosta';
             Bosta_Helper::bosta_set_transient('bosta_errors', "<p>{$message}</p>");
             // bosta_redirect_to_settings_page();
+            wc_get_logger()->error( $message, "Bosta WooCommerce" );
             return;
         }
 
@@ -47,6 +48,7 @@ class Bosta_Orders
         if (empty($trackingNumber)) {
             $message = 'Order is not synced at Bosta';
             Bosta_Helper::bosta_set_transient('bosta_errors', "<p>{$message}</p>");
+            wc_get_logger()->error( $message, "Bosta WooCommerce" );
             return;
         }
 
@@ -54,6 +56,7 @@ class Bosta_Orders
         $response = $this->api->send_api_request('GET', $url, $APIKey);
         if (!$response['success']) {
             Bosta_Helper::format_failed_order_message($response['error']);
+            wc_get_logger()->error( $response['error'], "Bosta WooCommerce" );
             return;
         }
         $orderDetails = $response['body']['data'];
