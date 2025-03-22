@@ -244,7 +244,6 @@ class Bosta_Orders {
         }
     
         $this->render_custom_buttons($nonces['send_all'], $nonces['fetch_status']);
-        $this->render_status_search_tags();
     }
 
     public function add_extra_tablenav_components($which)
@@ -285,7 +284,7 @@ class Bosta_Orders {
                 </div>
                 <div class="leftDiv">
                     <button type="submit" name="fetch_status" class="danger-button bosta_custom_button" value="yes">
-                        <img class="refreshIcon" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", __FILE__)); ?>" alt="Bosta"> Refresh Bosta Status
+                        <img class="refreshIcon" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_WC_URL)); ?>" alt="Bosta"> Refresh Bosta Status
                     </button>
                     <input type="hidden" name="bosta_fetch_status_nonce_field" value="<?php echo esc_attr($fetch_status); ?>">
                 </div>
@@ -294,21 +293,6 @@ class Bosta_Orders {
         <?php
     }
     
-    private function render_status_search_tags()
-    {
-    ?>
-        <div class="alignleft">
-            <p class="bosta_custom_p">Filter with Bosta status:</p>
-        </div>
-        <div class="alignleft bosta_status_search_tags">
-            <input type="button" value="Created" onClick="document.location.href='edit.php?s=created&post_type=shop_order&paged=1'" />
-            <input type="button" value="Delivered" onClick="document.location.href='edit.php?s=delivered&post_type=shop_order&paged=1'" />
-            <input type="button" value="Terminated" onClick="document.location.href='edit.php?s=terminated&post_type=shop_order&paged=1'" />
-            <input type="button" value="Returned" onClick="document.location.href='edit.php?s=returned&post_type=shop_order&paged=1'" />
-        </div>
-        <?php
-    }
-
     public function woocommerce_shop_order_search_order_total($search_fields)
     {
         $search_fields[] = 'bosta_tracking_number';
@@ -323,10 +307,10 @@ class Bosta_Orders {
 
         $options = array(
             ''          => __('All Bosta Statuses', 'woocommerce'),
-            'pending'   => __('Pending', 'woocommerce'),
-            'shipped'   => __('Shipped', 'woocommerce'),
+            'created'   => __('Created', 'woocommerce'),
             'delivered' => __('Delivered', 'woocommerce'),
-            'cancelled' => __('Cancelled', 'woocommerce'),
+            'terminated' => __('Terminated', 'woocommerce'),
+            'returned' => __('Returned', 'woocommerce'),
         );
 
         echo '<select name="bosta_status" id="bosta_status">';
