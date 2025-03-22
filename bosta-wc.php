@@ -43,12 +43,12 @@ if (is_admin()) {
 
     // Initialize Admin Classes
     function bosta_wc_admin_init() {
-        new Bosta_Admin_Menu();
+        // new Bosta_Admin_Menu();
         // new Bosta_Orders();
         // new Bosta_Pickups();
-        new Bosta_Settings();
-        new Bosta_Order_Actions();
-        new Bosta_Bulk_Actions();
+        // new Bosta_Settings();
+        // new Bosta_Order_Actions();
+        // new Bosta_Bulk_Actions();
     }
     add_action('admin_init', 'bosta_wc_admin_init');
 }
