@@ -28,6 +28,9 @@ class Bosta_Orders {
         add_filter('woocommerce_order_table_search_query_meta_keys', array($this,'woocommerce_shop_order_search_order_total'));
         add_filter('woocommerce_shop_order_search_fields', array($this,'woocommerce_shop_order_search_order_total'));
 
+        add_action('woocommerce_order_list_table_restrict_manage_orders', array($this,'add_custom_bosta_statues_filter_for_hpos'));
+        add_filter('woocommerce_order_list_table_prepare_items_query_args', array($this,'apply_custom_bosta_statues_filter_for_hpos'));
+
     }
     public function admin_order_preview_add_custom_meta_data($data, $order)
     {
@@ -313,6 +316,38 @@ class Bosta_Orders {
         $search_fields[] = 'bosta_status';
     
         return $search_fields;
+    }
+
+    public function add_custom_bosta_statues_filter_for_hpos() {
+        $current_status = isset($_GET['bosta_status']) ? sanitize_text_field($_GET['bosta_status']) : '';
+
+        $options = array(
+            ''          => __('All Bosta Statuses', 'woocommerce'),
+            'pending'   => __('Pending', 'woocommerce'),
+            'shipped'   => __('Shipped', 'woocommerce'),
+            'delivered' => __('Delivered', 'woocommerce'),
+            'cancelled' => __('Cancelled', 'woocommerce'),
+        );
+
+        echo '<select name="bosta_status" id="bosta_status">';
+        foreach ($options as $value => $label) {
+            echo '<option value="' . esc_attr($value) . '" ' . selected($current_status, $value, false) . '>' . esc_html($label) . '</option>';
+        }
+        echo '</select>';
+    }
+
+    public function apply_custom_bosta_statues_filter_for_hpos($query_args) {
+        if (!empty($_GET['bosta_status'])) {
+            $bosta_status = sanitize_text_field($_GET['bosta_status']);
+            
+            $query_args['meta_query'][] = array(
+                'key'     => 'bosta_status',
+                'value'   => $bosta_status,
+                'compare' => '=',
+            );
+        }
+    
+        return $query_args;
     }
 
     
