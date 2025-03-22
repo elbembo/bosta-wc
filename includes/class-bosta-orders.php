@@ -278,13 +278,13 @@ class Bosta_Orders {
         ?>
             <div class="alignleft bosta_custom_buttons_div">
                 <div class="rightDiv">
-                    <button type="submit" name="create_pickup" class="orders-button bosta_custom_button" value="yes">Create Pickup</button>
-                    <button type="submit" name="send_all_orders" class="orders-button bosta_custom_button" value="yes">Send all Orders to Bosta</button>
+                    <button type="submit" name="create_pickup" class="button bosta_custom_button" value="yes">Create Pickup</button>
+                    <button type="submit" name="send_all_orders" class="button bosta_custom_button" value="yes">Send all Orders to Bosta</button>
                     <input type="hidden" name="bosta_send_all_nonce_field" value="<?php echo esc_attr($send_all_nonce); ?>">
                 </div>
                 <div class="leftDiv">
-                    <button type="submit" name="fetch_status" class="danger-button bosta_custom_button" value="yes">
-                        <img class="refreshIcon" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_BASE_FILE)); ?>" alt="Bosta"> Refresh Bosta Status
+                    <button type="submit" name="fetch_status" class="button bosta_custom_button bosta_sync" value="yes">
+                        <img class="refreshIcon" width="14" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_BASE_FILE)); ?>" alt="Bosta"> Refresh Bosta Status
                     </button>
                     <input type="hidden" name="bosta_fetch_status_nonce_field" value="<?php echo esc_attr($fetch_status); ?>">
                 </div>
