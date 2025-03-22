@@ -276,17 +276,22 @@ class Bosta_Orders
 
     private function render_custom_buttons($send_all_nonce, $fetch_status)
     {
-        ?>
-        <button type="submit" name="create_pickup" class="button bosta_custom_button" value="yes">Create Pickup</button>
-        <button type="submit" name="send_all_orders" class="button bosta_custom_button" value="yes">Send all Orders to Bosta</button>
-        <input type="hidden" name="bosta_send_all_nonce_field" value="<?php echo esc_attr($send_all_nonce); ?>">
-
-        <button type="submit" name="fetch_status" class="button bosta_custom_button bosta_sync" value="yes">
-            <img class="refreshIcon" width="14" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_BASE_FILE)); ?>" alt="Bosta"> Refresh Bosta Status
-        </button>
-        <input type="hidden" name="bosta_fetch_status_nonce_field" value="<?php echo esc_attr($fetch_status); ?>">
-        <input type="hidden" name="page_num" value="<?php echo esc_attr($_GET['paged'] ?? '1'); ?>">
-        <?php
+?>
+        <div class="bosta_custom_button_warp">
+            <div>
+                <button type="submit" name="create_pickup" class="button bosta_custom_button" value="yes">Create Pickup</button>
+                <button type="submit" name="send_all_orders" class="button bosta_custom_button" value="yes">Send all Orders to Bosta</button>
+                <input type="hidden" name="bosta_send_all_nonce_field" value="<?php echo esc_attr($send_all_nonce); ?>">
+            </div>
+            <div>
+                <button type="submit" name="fetch_status" class="button bosta_custom_button bosta_sync" value="yes">
+                    <img class="refreshIcon" width="14" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_BASE_FILE)); ?>" alt="Bosta"> Refresh Bosta Status
+                </button>
+            </div>
+            <input type="hidden" name="bosta_fetch_status_nonce_field" value="<?php echo esc_attr($fetch_status); ?>">
+            <input type="hidden" name="page_num" value="<?php echo esc_attr($_GET['paged'] ?? '1'); ?>">
+        </div>
+<?php
     }
 
     public function woocommerce_shop_order_search_order_total($search_fields)
