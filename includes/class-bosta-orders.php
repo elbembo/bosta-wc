@@ -90,6 +90,7 @@ class Bosta_Orders
 
     private function preview_extract_order_details($orderDetails)
     {
+        return $orderDetails;
         return [
             'trackingNumber' => $orderDetails['trackingNumber'] ?? 'N/A',
             'status' => $orderDetails['state']['value'] ?? 'N/A',
