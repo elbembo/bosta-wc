@@ -42,7 +42,7 @@ class Bosta_Helper {
 
     public static function check_disable_bosta_zoning_checkbox()
     {
-        $disable_bosta_zoning = get_option('woocommerce_bosta_settings')['DisableBostaZoning'];
+        $disable_bosta_zoning = isset(get_option('woocommerce_bosta_settings')['DisableBostaZoning']) ? get_option('woocommerce_bosta_settings')['DisableBostaZoning'] : 'no';
         return $disable_bosta_zoning === 'yes';
     }
 
