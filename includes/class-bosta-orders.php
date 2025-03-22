@@ -268,7 +268,7 @@ class Bosta_Orders
             ]);
 
             $redirect_url = add_query_arg('paged', $current_page, admin_url('edit.php?post_type=shop_order'));
-            bosta_handle_bulk_action($redirect_url, $action_type, $orderIds);
+            $this->handle_bulk_action($redirect_url, $action_type, $orderIds);
         } else {
             wp_die(__('Invalid nonce! Something went wrong.', 'bosta'));
         }
