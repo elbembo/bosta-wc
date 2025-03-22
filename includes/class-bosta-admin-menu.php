@@ -17,7 +17,7 @@ class Bosta_Admin_Menu {
             'manage_options', 
             'bosta-dashboard', 
             array($this, 'dashboard_page'), 
-            plugin_dir_url(__FILE__) . '../assets/images/bosta.svg', 
+            plugin_dir_url(BOSTA_BASE_FILE) . '/assets/images/bosta.svg', 
             56
         );
         add_submenu_page('bosta-dashboard', __('Pickup Requests', 'bosta-wc'), __('Pickup Requests', 'bosta-wc'), 'manage_options', 'bosta-pickup-requests', array($this, 'pickup_requests_page'));
@@ -52,7 +52,7 @@ class Bosta_Admin_Menu {
             echo
             '<div class="error notice-warning text-bold">
                   <p>
-                    <img src="' . esc_url(plugins_url('assets/images/bosta.svg', __FILE__)) . '" alt="Bosta" style="height:13px; width:25px;">
+                    <img src="' . esc_url(plugins_url('assets/images/bosta.svg', BOSTA_BASE_FILE)) . '" alt="Bosta" style="height:13px; width:25px;">
                     <strong>' . sprintf(esc_html__('Bosta requires WooCommerce to be installed and active. You can download %s here.'), '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>') . '</strong>
                   </p>
                 </div>';

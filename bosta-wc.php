@@ -20,6 +20,7 @@ if (!defined('ABSPATH')) {
 define('BOSTA_WC_VERSION', '1.0.0');
 define('BOSTA_WC_PATH', plugin_dir_path(__FILE__));
 define('BOSTA_WC_URL', plugin_dir_url(__FILE__));
+define('BOSTA_BASE_FILE', __FILE__);
 define('BOSTA_WC_API_URL', 'https://app.bosta.co/api/v2'); // Replace with actual API URL
 const BOSTA_ENV_URL_V0 = 'https://app.bosta.co/api/v0';
 const BOSTA_ENV_URL_V2 = 'https://app.bosta.co/api/v2';

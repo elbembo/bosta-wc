@@ -284,7 +284,7 @@ class Bosta_Orders {
                 </div>
                 <div class="leftDiv">
                     <button type="submit" name="fetch_status" class="danger-button bosta_custom_button" value="yes">
-                        <img class="refreshIcon" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_WC_URL)); ?>" alt="Bosta"> Refresh Bosta Status
+                        <img class="refreshIcon" src="<?php echo esc_url(plugins_url("assets/images/refreshIcon.png", BOSTA_BASE_FILE)); ?>" alt="Bosta"> Refresh Bosta Status
                     </button>
                     <input type="hidden" name="bosta_fetch_status_nonce_field" value="<?php echo esc_attr($fetch_status); ?>">
                 </div>
